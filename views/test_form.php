@@ -54,15 +54,29 @@ code {
 	<p style="width:20em; float:left"><label>Method:</label> <?php echo form_dropdown('method', array('get'=>'GET', 'post' => 'POST', 'put' => 'PUT', 'delete' =>'DELETE'), $this->input->post('method')); ?></p>
 	<p style="width:35em; float:left"><label>Request format:</label> <?php echo form_dropdown('format', array('xml'=>'xml', 'json'=>'json', 'csv'=>'csv', 'html'=>'html', 'serialize'=>'serialize'), $this->input->post('format')); ?></p>
 	
-	
 	<p><?php echo form_submit('go', 'Make Request'); ?></p>
 	
 	<?php echo form_close(); ?>
 </div>
 
 <div style="margin-top:9em;">
-<?php echo $this->rest->debug(); ?>
+<?php echo $debug; ?>
 </div>
+
+<?php if(!empty($result)): ?>
+<h2>PHP Result</h2>
+
+<p>A useable PHP array or object for use in your code.</p>
+
+<pre>
+<?php var_dump($result); ?>
+</pre>
+
+<?php else: ?>
+
+<p>Try entering "http://twitter.com/" as the server and "users/show/philsturgeon" as the Resource. Then fiddle with format to see what the Twitter API does.</p>
+
+<?php endif; ?>
 
 <p><br />Page rendered in {elapsed_time} seconds</p>
 

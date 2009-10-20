@@ -15,8 +15,11 @@ class Test extends Controller
 	        
 	        $method = trim($this->input->post('method', TRUE));
 	        $uri = trim($this->input->post('uri', TRUE));
+	        $format = trim($this->input->post('format', TRUE));
 	        $params = trim(unserialize($this->input->post('params', TRUE)));
         
+	        $this->rest->format($format);
+	        
 			if(in_array($method, array('put', 'post')))
 			{	        
 				$result = $this->rest->{$method}($uri, $params);
@@ -26,9 +29,15 @@ class Test extends Controller
 				$result = $this->rest->{$method}($uri);
 			}
 			
+			$this->load->view('test_form', array('result' => $result, 'debug' => $this->rest->debug()));
+			
         }
         
-        $this->load->view('test_form');
+        else
+        {
+        	$this->load->view('test_form', array('result' => '', 'debug' => ''));
+        }
+        
 
     }
     

@@ -18,6 +18,7 @@ class Twitter extends Controller {
     		show_error('Please enter a user in the title. Eg: '.anchor('twitter/show_users/philsturgeon', 'twitter/show_users/philsturgeon'));
     	}
     	
+    	
         $result = $this->rest->get('users/show/'.$username);
         
         foreach( $result as $thing => $value )
@@ -34,7 +35,11 @@ class Twitter extends Controller {
     		show_error('Please enter a user in the title. Eg: '.anchor('twitter/tweets/philsturgeon', 'twitter/tweets/philsturgeon'));
     	}
     	
-        $result = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
+    	$this->load->library('rest', array(
+        	'server' => 'http://twitter.com/'
+        ));
+        
+        $tweets = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
         
         echo $this->rest->debug();
 
