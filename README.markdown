@@ -1,8 +1,7 @@
-CodeIgniter-cURL
+CodeIgniter-REST Client
 ================
 
-CodeIgniter-cURL is a CodeIgniter library which makes it easy to do simple cURL requests 
-and makes more complicated cURL requests easier too.
+CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use REST services/API's such as Twitter, Facebook and Flickr, wether they are public or hidden behind HTTP Basic/Digest.
 
 Usage
 -----
