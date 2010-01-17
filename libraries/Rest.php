@@ -4,8 +4,8 @@
  * @created 04/06/2009
  */
 
-class REST {
-	
+class REST
+{
     private $CI;                // CodeIgniter instance
 
     private $rest_server;
@@ -13,7 +13,7 @@ class REST {
     private $supported_formats = array(
 		'xml' 				=> 'application/xml',
 		'json' 				=> 'application/json',
-		'serialize' 		=> 'text/plain',
+		'serialize' 		=> 'application/vnd.php.serialized',
 		'php' 				=> 'text/plain',
 	);
     
@@ -23,13 +23,14 @@ class REST {
 		'application/json' 	=> 'json',
 		'text/json' 		=> 'json',
 		'text/csv' 			=> 'csv',
-		'application/csv' 	=> 'csv'
+		'application/csv' 	=> 'csv',
+    	'application/vnd.php.serialized' => 'serialize'
 	);
 	
 	private $format;
 	private $mime_type;
     
-    private $responce_string;
+    private $response_string;
     
     function __construct($config = array())
     {
@@ -83,9 +84,9 @@ class REST {
     }
     
     
-    public function delete($uri, $format = NULL)
+    public function delete($uri, $params = array(), $format = NULL)
     {
-        return $this->_call('delete', $uri, NULL, $format);
+        return $this->_call('delete', $uri, $params, $format);
     }
     
     
@@ -108,21 +109,12 @@ class REST {
         }
         
         // Run and send params if its post or put
-        if($method == 'post' || $method == 'put')
-        {
-	        $this->CI->curl->$method($params);
-    	}
-    	
-    	// Run without params if its delete
-    	elseif($method == 'delete')
-    	{
-	        $this->CI->curl->$method();
-    	}
+        $this->CI->curl->{$method}($params);
         
-        $responce = $this->CI->curl->execute();
+        $response = $this->CI->curl->execute();
 
         // Format and return
-        return $this->_format_responce($responce);
+        return $this->_format_response($response);
     }
     
     
@@ -153,16 +145,16 @@ class REST {
 		echo "<h3>Request</h3>\n";
 		echo $request['url']."<br/>\n";
 		echo "=============================================<br/>\n";
-		echo "<h3>Responce</h3>\n";
+		echo "<h3>Response</h3>\n";
 		
-		if($this->responce_string)
+		if($this->response_string)
 		{
-			echo "<code>".nl2br(htmlentities($this->responce_string))."</code><br/>\n\n";
+			echo "<code>".nl2br(htmlentities($this->response_string))."</code><br/>\n\n";
 		}
 		
 		else
 		{
-			echo "No responce<br/>\n\n";
+			echo "No response<br/>\n\n";
 		}
 		
 		echo "=============================================<br/>\n";
@@ -188,14 +180,14 @@ class REST {
 		$this->CI->curl->http_header('Accept: '.$this->mime_type);
 	}
 	
-	private function _format_responce($responce)
+	private function _format_response($response)
 	{
-		$this->responce_string =& $responce;
+		$this->response_string =& $response;
 		
 		// It is a supported format, so just run its formatting method
 		if(array_key_exists($this->format, $this->supported_formats))
 		{
-			return $this->{"_".$this->format}($responce);
+			return $this->{"_".$this->format}($response);
 		}
 
 		// Find out what format the data was returned in
@@ -211,10 +203,10 @@ class REST {
 		
 		if(array_key_exists($returned_mime, $this->auto_detect_formats))
 		{
-			return $this->{"_".$this->auto_detect_formats[$returned_mime]}($responce);
+			return $this->{'_'.$this->auto_detect_formats[$returned_mime]}($response);
 		}
 		
-		return $responce;
+		return $response;
 	}
 	
 	
@@ -274,4 +266,3 @@ class REST {
 
 /* End of file REST.php */
 /* Location: ./application/libraries/REST.php */
-?>

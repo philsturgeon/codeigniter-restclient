@@ -31,56 +31,36 @@ class Curl {
         if($url) $this->create($url);
     }
  
+    
+    function __call($method, $arguments)
+    {
+    	if(in_array($method, array('simple_get', 'simple_post', 'simple_put', 'simple_delete')))
+    	{
+    		$verb = str_replace('simple_', '', $method);
+    		array_unshift($arguments, $verb);
+    		call_user_func_array(array($this, '_simple_call'), $arguments);
+    	}
+    }
+    
     /* =================================================================================
      * SIMPLE METHODS 
      * Using these methods you can make a quick and easy cURL call with one line.
      * ================================================================================= */
  
     // Return a get request results
-    public function simple_get($url, $options = array())
+    public function _simple_call($method, $url, $params = array(), $options = array())
     {
         // If a URL is provided, create new session
         $this->create($url);
 
+		$this->{$method}($params, $options);
+        
         // Add in the specific options provided
         $this->options($options);
 
         return $this->execute();
     }
  
-    // Send a post request on its way with optional parameters (and get output)
-    // $url = '', $params = array(), $options = array()
-    public function simple_post($url, $params = array(), $options = array())
-    { 
-		$this->create($url);
-        
-		$this->post($params, $options);
-        
-		return $this->execute();
-    }
- 
-    // Send a post request on its way with optional parameters (and get output)
-    // $url = '', $params = array(), $options = array()
-    public function simple_put($url, $params = array(), $options = array())
-    { 
-		$this->create($url);
-        
-		$this->put($params, $options);
-        
-		return $this->execute();
-    }
- 
-    // Send a delete request on its way with optional parameters (and get output)
-    // $url = ''
-    public function simple_delete($url, $options = array())
-    { 
-		$this->create($url);
-    	
-		$this->delete($options);
-			        
-		return $this->execute();
-    }
-    
     public function simple_ftp_get($url, $file_path, $username = '', $password = '')
     {
         // If there is no ftp:// or any protocol entered, add ftp://
@@ -132,28 +112,44 @@ class Curl {
         $this->option(CURLOPT_POSTFIELDS, $params);
     }
     
-    public function put($params = array(), $options = array()) { 
-        
+    public function put($params = array(), $options = array())
+    { 
         // If its an array (instead of a query string) then format it correctly
-        if(is_array($params)) {
+        if(is_array($params))
+        {
             $params = http_build_query($params);
         }
         
         // Add in the specific options provided
         $this->options($options);
         
-        $this->option(CURLOPT_PUT, TRUE);
+        $this->http_method('put');
+        $this->option(CURLOPT_POSTFIELDS, $params);
+        
+        // Override method, I think this overrides $_POST with PUT data but... we'll see eh?
+        $this->option(CURLOPT_HTTPHEADER, array('X-HTTP-Method-Override: PUT'));
+    }
+    
+    public function delete($params, $options = array())
+    {
+        // If its an array (instead of a query string) then format it correctly
+        if(is_array($params))
+        {
+            $params = http_build_query($params);
+        }
+        
+        // Add in the specific options provided
+        $this->options($options);
+        
+        $this->http_method('delete');
+        
         $this->option(CURLOPT_POSTFIELDS, $params);
     }
     
-    public function delete($options = array())
+    public function set_cookies($params = array())
     {
-    	$this->http_method('delete');
-    }
-    
-    public function set_cookies($params = array()) {
-        
-        if(is_array($params)) {
+        if(is_array($params))
+        {
             $params = http_build_query($params);
         }
         
@@ -179,14 +175,15 @@ class Curl {
         return $this;
     }
     
-    public function proxy($url = '', $port = 80) {
-        
+    public function proxy($url = '', $port = 80)
+    {
         $this->option(CURLOPT_HTTPPROXYTUNNEL. TRUE);
         $this->option(CURLOPT_PROXY, $url.':'. 80);
         return $this;
     }
     
-    public function proxy_login($username = '', $password = '') {
+    public function proxy_login($username = '', $password = '')
+    {
         $this->option(CURLOPT_PROXYUSERPWD, $username.':'.$password);
         return $this;
     }
@@ -198,27 +195,33 @@ class Curl {
         {
             $this->option($option_code, $option_value);
         }
-        unset($option_code, $option_value);
 
         // Set all options provided
         curl_setopt_array($this->session, $this->options);
-                
+        
         return $this;
     }
     
-    public function option($code, $value) {
+    public function option($code, $value)
+    {
+    	if(is_string($code) && !is_numeric($code))
+    	{
+    		$code = constant('CURLOPT_' . strtoupper($code));
+    	}
+    	
     	$this->options[$code] = $value;
         return $this;
     }
     
     // Start a session from a URL
-    public function create($url) {
-        
+    public function create($url)
+    {
         // Reset the class
         $this->set_defaults();
 
         // If no a protocol in URL, assume its a CI link
-        if(!preg_match('!^\w+://! i', $url)) {
+        if(!preg_match('!^\w+://! i', $url))
+        {
             $this->CI->load->helper('url');
             $url = site_url($url);
         }
@@ -310,7 +313,7 @@ class Curl {
         $this->error_string = '';
     }
 }
-// END cURL Class
+// END Curl Class
 
-/* End of file cURL.php */
-/* Location: ./application/libraries/curl.php */
+/* End of file Curl.php */
+/* Location: ./application/libraries/Curl.php */
