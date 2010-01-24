@@ -15,6 +15,7 @@ class REST
 		'json' 				=> 'application/json',
 		'serialize' 		=> 'application/vnd.php.serialized',
 		'php' 				=> 'text/plain',
+    	'csv'				=> 'text/csv'
 	);
     
     private $auto_detect_formats = array(
