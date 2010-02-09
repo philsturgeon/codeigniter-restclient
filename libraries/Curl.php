@@ -8,7 +8,7 @@ class Curl {
 	
     private $CI;                // CodeIgniter instance
     
-    private $responce;          // Contains the cURL responce for debug
+    private $response;          // Contains the cURL response for debug
    
     private $session;           // Contains the cURL handler for a session
     private $url;               // URL of the session
@@ -24,11 +24,14 @@ class Curl {
         $this->CI =& get_instance();
         log_message('debug', 'cURL Class Initialized');
         
-        if (!function_exists('curl_init')) {
+        if (!$this->is_enabled()) {
             log_message('error', 'cURL Class - PHP was not built with cURL enabled. Rebuild PHP with --with-curl to use cURL.') ;
         }
         
-        if($url) $this->create($url);
+        if($url)
+        {
+        	$this->create($url);
+        }
     }
  
     
@@ -38,7 +41,7 @@ class Curl {
     	{
     		$verb = str_replace('simple_', '', $method);
     		array_unshift($arguments, $verb);
-    		call_user_func_array(array($this, '_simple_call'), $arguments);
+    		return call_user_func_array(array($this, '_simple_call'), $arguments);
     	}
     }
     
@@ -177,8 +180,8 @@ class Curl {
     
     public function proxy($url = '', $port = 80)
     {
-        $this->option(CURLOPT_HTTPPROXYTUNNEL. TRUE);
-        $this->option(CURLOPT_PROXY, $url.':'. 80);
+        $this->option(CURLOPT_HTTPPROXYTUNNEL, TRUE);
+        $this->option(CURLOPT_PROXY, $url.':'. $port);
         return $this;
     }
     
@@ -249,10 +252,10 @@ class Curl {
         $this->options();
 
         // Execute the request & and hide all output
-        $this->responce = curl_exec($this->session);
+        $this->response = curl_exec($this->session);
 
         // Request failed
-        if($this->responce === FALSE)
+        if($this->response === FALSE)
         {
             $this->error_code = curl_errno($this->session);
             $this->error_string = curl_error($this->session);
@@ -269,18 +272,22 @@ class Curl {
             
             curl_close($this->session);
             $this->session = NULL;
-            return $this->responce;
+            return $this->response;
         }
     }
     
+    public function is_enabled()
+    {
+		return function_exists('curl_init');
+    }
     
     public function debug()
     {
         echo "=============================================<br/>\n";
         echo "<h2>CURL Test</h2>\n";
         echo "=============================================<br/>\n";
-        echo "<h3>Responce</h3>\n";
-        echo "<code>".nl2br(htmlentities($this->responce))."</code><br/>\n\n";
+        echo "<h3>response</h3>\n";
+        echo "<code>".nl2br(htmlentities($this->response))."</code><br/>\n\n";
     
         if($this->error_string)
         {
@@ -306,7 +313,7 @@ class Curl {
     
     private function set_defaults()
     {
-        $this->responce = '';
+        $this->response = '';
         $this->info = array();
         $this->options = array();
         $this->error_code = 0;
