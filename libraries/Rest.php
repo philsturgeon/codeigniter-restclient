@@ -109,9 +109,13 @@ class REST
         	$this->CI->curl->http_login($this->http_user, $this->http_pass, $this->http_auth);
         }
         
-        // Run and send params if its post or put
+        // We still want the response even if there is an error code over 400
+        $this->CI->curl->option('failonerror', FALSE);
+        
+        // Call the correct method with parameters
         $this->CI->curl->{$method}($params);
         
+        // Execute and return the response from the REST server
         $response = $this->CI->curl->execute();
 
         // Format and return
