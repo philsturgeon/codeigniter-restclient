@@ -16,7 +16,7 @@ class Test extends Controller
 	        $method = trim($this->input->post('method', TRUE));
 	        $uri = trim($this->input->post('uri', TRUE));
 	        $format = trim($this->input->post('format', TRUE));
-	        $params = trim(unserialize($this->input->post('params', TRUE)));
+	        $params = unserialize(trim($this->input->post('params', TRUE)));
         
 	        $this->rest->format($format);
 	        
