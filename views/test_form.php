@@ -49,7 +49,7 @@ code {
 	
 	<p style="width:25em; float:left"><label>Server (tail slash):</label> <?php echo form_input('server', $this->input->post('server')); ?></p>
 	<p style="width:35em; float:left"><label>URI (Resource) - no preceeding slash:</label> <?php echo form_input('uri', $this->input->post('uri')); ?></p>
-	<p style="width:35em; float:left"><label>Params (as a serialized array): </label><?php echo form_input('params', $this->input->post('params')); ?></p>
+	<p style="width:35em; float:left"><label>Params (as a query string): </label><?php echo form_input('params', $this->input->post('params')); ?></p>
 	<br style="clear:both" />
 	<p style="width:20em; float:left"><label>Method:</label> <?php echo form_dropdown('method', array('get'=>'GET', 'post' => 'POST', 'put' => 'PUT', 'delete' =>'DELETE'), $this->input->post('method')); ?></p>
 	<p style="width:35em; float:left"><label>Request format:</label> <?php echo form_dropdown('format', array('xml'=>'xml', 'json'=>'json', 'csv'=>'csv', 'html'=>'html', 'serialize'=>'serialize'), $this->input->post('format')); ?></p>

@@ -16,17 +16,22 @@ class Test extends Controller
 	        $method = trim($this->input->post('method', TRUE));
 	        $uri = trim($this->input->post('uri', TRUE));
 	        $format = trim($this->input->post('format', TRUE));
-	        $params = trim(unserialize($this->input->post('params', TRUE)));
-        
+			$params = $this->input->post('params', TRUE);
+
 	        $this->rest->format($format);
-	        
-			if(in_array($method, array('put', 'post')))
-			{	        
+	        $this->rest->api_key('foo');
+	        $this->rest->language('en-GB, pr');
+
+//			parse_str($params, $params);
+//
+//			$params['preview_file'] = 'FOO';//file_get_contents('/Users/phil/Desktop/Files/AstralSpica.jpg');
+//			$params['preview_file_ext'] = 'jpg';
+//
+//			var_dump($params);
+
+			if(in_array($method, array('put', 'post', 'get', 'delete')))
+			{
 				$result = $this->rest->{$method}($uri, $params);
-			}
-			elseif(in_array($method, array('get', 'delete')))
-			{	        
-				$result = $this->rest->{$method}($uri);
 			}
 			
 			$this->load->view('test_form', array('result' => $result, 'debug' => $this->rest->debug()));
@@ -37,11 +42,5 @@ class Test extends Controller
         {
         	$this->load->view('test_form', array('result' => '', 'debug' => ''));
         }
-        
-
     }
-    
-    
 }
-
-?>
