@@ -1,15 +1,16 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * Curl Class
+ * CodeIgniter Curl Class
  *
- * @package		Module Creator
- * @subpackage	ThirdParty
- * @category	Libraries
- * @author		Philip Sturgeon
- * @copyright	Copyright (c) 2008 - 2010, Phil Sturgeon
- * @created		09/12/2008
+ * Work with remote servers via cURL much easier than using the native PHP bindings.
+ *
+ * @package        	CodeIgniter
+ * @subpackage    	Libraries
+ * @category    	Libraries
+ * @author        	Philip Sturgeon
+ * @license         http://philsturgeon.co.uk/code/dbad-license
+ * @link			http://philsturgeon.co.uk/code/codeigniter-curl
  */
-
 class Curl
 {
     private $_ci;                // CodeIgniter instance
@@ -30,15 +31,12 @@ class Curl
         $this->_ci =& get_instance();
         log_message('debug', 'cURL Class Initialized');
 
-        if (!$this->is_enabled())
+        if ( ! $this->is_enabled())
 		{
             log_message('error', 'cURL Class - PHP was not built with cURL enabled. Rebuild PHP with --with-curl to use cURL.') ;
         }
 
-        if ($url)
-        {
-        	$this->create($url);
-        }
+		$url AND $this->create($url);
     }
 
 
@@ -75,7 +73,7 @@ class Curl
     public function simple_ftp_get($url, $file_path, $username = '', $password = '')
     {
         // If there is no ftp:// or any protocol entered, add ftp://
-        if (!preg_match('!^(ftp|sftp)://! i', $url))
+        if ( ! preg_match('!^(ftp|sftp)://! i', $url))
 		{
             $url = 'ftp://'.$url;
         }
@@ -201,6 +199,21 @@ class Curl
         return $this;
     }
 
+    public function ssl( $verify_peer = TRUE, $verify_host = 2, $path_to_cert = NULL) {
+        if ($verify_peer)
+        {
+            $this->option(CURLOPT_SSL_VERIFYPEER, TRUE);
+            $this->option(CURLOPT_SSL_VERIFYHOST, $verify_host);
+            $this->option(CURLOPT_CAINFO, $path_to_cert);
+        }
+        else
+        {
+            $this->option(CURLOPT_SSL_VERIFYPEER, FALSE);
+        }
+        return $this;
+    }
+
+
     public function options($options = array())
     {
         // Merge options in with the rest - done as array_merge() does not overwrite numeric keys
@@ -233,7 +246,7 @@ class Curl
         $this->set_defaults();
 
         // If no a protocol in URL, assume its a CI link
-        if (!preg_match('!^\w+://! i', $url))
+        if ( ! preg_match('!^\w+://! i', $url))
         {
             $this->_ci->load->helper('url');
             $url = site_url($url);
@@ -251,10 +264,19 @@ class Curl
         // Set two default options, and merge any extra ones in
         if (!isset($this->options[CURLOPT_TIMEOUT]))           $this->options[CURLOPT_TIMEOUT] = 30;
         if (!isset($this->options[CURLOPT_RETURNTRANSFER]))    $this->options[CURLOPT_RETURNTRANSFER] = TRUE;
-        if (!isset($this->options[CURLOPT_FOLLOWLOCATION]))    $this->options[CURLOPT_FOLLOWLOCATION] = TRUE;
         if (!isset($this->options[CURLOPT_FAILONERROR]))       $this->options[CURLOPT_FAILONERROR] = TRUE;
 
-		if (!empty($this->headers))
+		// Only set follow location if not running securely
+		if ( ! ini_get('safe_mode') && ! ini_get('open_basedir'))
+		{
+			// Ok, follow location is not set already so lets set it to true
+			if (!isset($this->options[CURLOPT_FOLLOWLOCATION]))
+			{
+				$this->options[CURLOPT_FOLLOWLOCATION] = TRUE;
+			}
+        }
+
+		if ( ! empty($this->headers))
 		{
 			$this->option(CURLOPT_HTTPHEADER, $this->headers);
 		}

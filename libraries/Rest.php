@@ -1,12 +1,21 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * @author Philip Sturgeon
- * @created 04/06/2009
+ * CodeIgniter REST Class
+ *
+ * Mske REST requests to RESTful services with simple syntax.
+ *
+ * @package        	CodeIgniter
+ * @subpackage    	Libraries
+ * @category    	Libraries
+ * @author        	Philip Sturgeon
+ * @created			04/06/2009
+ * @license         http://philsturgeon.co.uk/code/dbad-license
+ * @link			http://github.com/philsturgeon/codeigniter-restclient
  */
 
 class REST
 {
-    private $_ci;                // CodeIgniter instance
+    private $_ci;
 
     private $rest_server;
 
@@ -281,7 +290,6 @@ class REST
     }
 
 }
-// END REST Class
 
 /* End of file REST.php */
 /* Location: ./application/libraries/REST.php */
