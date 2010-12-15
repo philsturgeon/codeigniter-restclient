@@ -201,6 +201,21 @@ class Curl
         return $this;
     }
 
+    public function ssl( $verify_peer = TRUE, $verify_host = 2, $path_to_cert = NULL) 
+    {
+        if ($verify_peer)
+        {
+            $this->option(CURLOPT_SSL_VERIFYPEER, TRUE);
+            $this->option(CURLOPT_SSL_VERIFYHOST, $verify_host);
+            $this->option(CURLOPT_CAINFO, $path_to_cert);
+        }
+        else
+        {
+            $this->option(CURLOPT_SSL_VERIFYPEER, FALSE);
+        }
+        return $this;
+    }
+
     public function options($options = array())
     {
         // Merge options in with the rest - done as array_merge() does not overwrite numeric keys
