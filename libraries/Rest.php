@@ -241,7 +241,7 @@ class REST
     // Format XML for output
     private function _xml($string)
     {
-    	return (array) simplexml_load_string($string);
+    	return (array) simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA);
     }
 
     // Format HTML for output
