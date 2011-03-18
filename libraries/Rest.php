@@ -162,6 +162,21 @@ class REST
 
 		return $this;
 	}
+	
+	// Return HTTP status code
+	public function status() {
+		return $this->info('http_code');
+	}
+	
+	// Return curl info by specified key, or whole array
+	public function info($key = null) {
+		return (!$key) ? $this->_ci->curl->info : @$this->_ci->curl->info[$key];
+	}
+	
+	// Set custom options
+	public function option($code, $value) {
+		$this->_ci->curl->option($code, $value);
+	}
 
 	public function debug()
 	{
