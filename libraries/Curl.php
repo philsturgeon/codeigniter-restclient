@@ -32,13 +32,18 @@ class Curl
         log_message('debug', 'cURL Class Initialized');
 
         if ( ! $this->is_enabled())
-		{
-            log_message('error', 'cURL Class - PHP was not built with cURL enabled. Rebuild PHP with --with-curl to use cURL.') ;
+        {
+            log_message('error', 'cURL Class - PHP was not built with cURL enabled. Rebuild PHP with --with-curl to use cURL.') ;	
         }
 
-		$url AND $this->create($url);
+        $url AND $this->create($url);
     }
-
+    
+    function __destruct() 
+    {
+    	//clear settings
+    	$this->set_defaults(true);
+    }
 
     function __call($method, $arguments)
     {
@@ -294,8 +299,6 @@ class Curl
 
             curl_close($this->session);
             $this->session = NULL;
-            $this->headers = array(); //reset headers
-            $this->options = array(); //reset options
             return FALSE;
         }
 
@@ -306,8 +309,6 @@ class Curl
 
             curl_close($this->session);
             $this->session = NULL;
-            $this->headers = array(); //reset headers
-            $this->options = array(); //reset options
             return $this->response;
         }
     }
@@ -347,12 +348,17 @@ class Curl
 		);
 	}
 
-    private function set_defaults()
+    private function set_defaults($clear_all = false)
     {
         $this->response = '';
         $this->info = array();
         $this->error_code = 0;
         $this->error_string = '';
+        if ($clear_all) {
+        	$this->session = NULL;
+        	$this->headers = array(); //reset headers
+        	$this->options = array(); //reset options
+        }
     }
 }
 // END Curl Class

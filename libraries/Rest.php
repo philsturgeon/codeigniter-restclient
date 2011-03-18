@@ -55,6 +55,12 @@ class REST
 			$this->initialize($config);
 		}
     }
+    
+    function __destruct() 
+    {
+    	//clear curl settings
+    	$this->_ci->curl->__destruct();
+    }
 
     public function initialize($config)
     {
