@@ -294,6 +294,8 @@ class Curl
 
             curl_close($this->session);
             $this->session = NULL;
+            $this->headers = array(); //reset headers
+            $this->options = array(); //reset options
             return FALSE;
         }
 
@@ -304,6 +306,8 @@ class Curl
 
             curl_close($this->session);
             $this->session = NULL;
+            $this->headers = array(); //reset headers
+            $this->options = array(); //reset options
             return $this->response;
         }
     }
@@ -347,7 +351,6 @@ class Curl
     {
         $this->response = '';
         $this->info = array();
-        $this->options = array();
         $this->error_code = 0;
         $this->error_string = '';
     }
