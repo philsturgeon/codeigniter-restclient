@@ -15,7 +15,7 @@
 class Curl {
 
 	private $_ci;				// CodeIgniter instance
-	private $response;		  // Contains the cURL response for debug
+	private $response = '';		  // Contains the cURL response for debug
 	private $session;		   // Contains the cURL handler for a session
 	private $url;			   // URL of the session
 	private $options = array(); // Populates curl_setopt_array
@@ -239,9 +239,6 @@ class Curl {
 	// Start a session from a URL
 	public function create($url)
 	{
-		// Reset the class
-		$this->set_defaults();
-
 		// If no a protocol in URL, assume its a CI link
 		if ( ! preg_match('!^\w+://! i', $url))
 		{
@@ -293,8 +290,6 @@ class Curl {
 		$this->response = curl_exec($this->session);
 		$this->info = curl_getinfo($this->session);
 
-		$this->set_defaults();
-
 		// Request failed
 		if ($this->response === FALSE)
 		{
@@ -302,7 +297,8 @@ class Curl {
 			$this->error_string = curl_error($this->session);
 
 			curl_close($this->session);
-			$this->session = NULL;
+			$this->set_defaults();
+
 			return FALSE;
 		}
 
@@ -310,7 +306,8 @@ class Curl {
 		else
 		{
 			curl_close($this->session);
-			$this->session = NULL;
+			$this->set_defaults();
+			
 			return $this->response;
 		}
 	}
@@ -355,7 +352,7 @@ class Curl {
 		$this->response = '';
 		$this->headers = array();
 		$this->options = array();
-		$this->error_code = 0;
+		$this->error_code = NULL;
 		$this->error_string = '';
 		$this->session = NULL;
 	}
