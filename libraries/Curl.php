@@ -53,13 +53,22 @@ class Curl {
 	 * Using these methods you can make a quick and easy cURL call with one line.
 	 * ================================================================================= */
 
-	// Return a get request results
 	public function _simple_call($method, $url, $params = array(), $options = array())
 	{
-		// If a URL is provided, create new session
-		$this->create($url);
+		// Get acts differently, as it doesnt accept parameters in the same way
+		if ($method === 'get')
+		{
+			// If a URL is provided, create new session
+			$this->create($url.($params ? '?'.http_build_query($params) : ''));
+		}
 
-		$this->{$method}($params, $options);
+		else
+		{
+			// If a URL is provided, create new session
+			$this->create($url);
+
+			$this->{$method}($params);
+		}
 
 		// Add in the specific options provided
 		$this->options($options);
@@ -306,9 +315,9 @@ class Curl {
 		else
 		{
 			curl_close($this->session);
+			$response = $this->response;
 			$this->set_defaults();
-			
-			return $this->response;
+			return $response;
 		}
 	}
 
