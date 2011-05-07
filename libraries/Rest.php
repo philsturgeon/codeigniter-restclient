@@ -10,14 +10,12 @@
  * @author        	Philip Sturgeon
  * @created			04/06/2009
  * @license         http://philsturgeon.co.uk/code/dbad-license
- * @link			http://github.com/philsturgeon/codeigniter-restclient
+ * @link			http://getsparks.org/packages/restclient/show
  */
 
 class REST
 {
     private $_ci;
-
-    private $rest_server;
 
     private $supported_formats = array(
 		'xml' 				=> 'application/xml',
@@ -37,8 +35,13 @@ class REST
     	'application/vnd.php.serialized' => 'serialize'
 	);
 
+	private $rest_server;
 	private $format;
 	private $mime_type;
+	
+	private $http_auth = null;
+	private $http_user = null;
+	private $http_pass = null;
 
     private $response_string;
 
@@ -47,13 +50,18 @@ class REST
         $this->_ci =& get_instance();
         log_message('debug', 'REST Class Initialized');
 
+		/* Not using Sparks? You bloody well should be.
+		| If you are going to be a stick in the mud then do it the old fashioned way
+		
 		$this->_ci->load->library('curl');
+		
+		*/
+		
+		// Load the cURL spark which this is dependant on
+		$this->_ci->load->spark('curl/1.2.0');
 
 		// If a URL was passed to the library
-		if ( ! empty($config))
-		{
-			$this->initialize($config);
-		}
+		empty($config) OR $this->initialize($config);
     }
 
 	function __destruct()
@@ -70,9 +78,9 @@ class REST
 			$this->rest_server .= '/';
 		}
 
-		$this->http_auth = isset($config['http_auth']) ? $config['http_auth'] : '';
-		$this->http_user = isset($config['http_user']) ? $config['http_user'] : '';
-		$this->http_pass = isset($config['http_pass']) ? $config['http_pass'] : '';
+		isset($config['http_auth']) && $this->http_auth = $config['http_auth'];
+		isset($config['http_user']) && $this->http_user = $config['http_user'];
+		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
     }
 
 
@@ -264,7 +272,7 @@ class REST
     // Format XML for output
     private function _xml($string)
     {
-    	return (array) simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA);
+    	return $string ? (array) simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA) : array();
     }
 
     // Format HTML for output

@@ -1,24 +1,23 @@
-CodeIgniter-REST Client
-================
+# CodeIgniter-REST Client
 
 CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use REST services/API's such as Twitter, Facebook and Flickr, wether they are public or hidden behind HTTP Basic/Digest.
 
-
-Requirements
-------------
+## Requirements
 
 1. PHP 5.1+
-2. CodeIgniter 1.6.x - 2.0-dev
+2. CodeIgniter 2.0.0+
 3. cURL
-4. CodeIgniter Curl library: http://github.com/philsturgeon/codeigniter-curl
+4. CodeIgniter Curl library: http://getsparks.org/packages/curl/show
 
-Usage
------
+## Usage
 
-	$this->load->library('rest', array(
-       	'server' => 'http://twitter.com/'
-  	));
-        
+	// Load the rest client spark
+	$this->load->spark('restclient');
+	
+	// Run some setup
+	$this->rest->initialize(array('server' => 'http://twitter.com/'));
+    
+	// Pull in an array of tweets
     $tweets = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
 
 This is clearly a VERY simple example and more can much more can be done with it. For up-to-date 
