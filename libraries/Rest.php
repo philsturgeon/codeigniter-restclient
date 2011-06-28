@@ -15,9 +15,9 @@
 
 class REST
 {
-    private $_ci;
+    protected $_ci;
 
-    private $supported_formats = array(
+    protected $supported_formats = array(
 		'xml' 				=> 'application/xml',
 		'json' 				=> 'application/json',
 		'serialize' 		=> 'application/vnd.php.serialized',
@@ -25,7 +25,7 @@ class REST
     	'csv'				=> 'text/csv'
 	);
 
-    private $auto_detect_formats = array(
+    protected $auto_detect_formats = array(
 		'application/xml' 	=> 'xml',
 		'text/xml' 			=> 'xml',
 		'application/json' 	=> 'json',
@@ -35,15 +35,15 @@ class REST
     	'application/vnd.php.serialized' => 'serialize'
 	);
 
-	private $rest_server;
-	private $format;
-	private $mime_type;
+	protected $rest_server;
+	protected $format;
+	protected $mime_type;
 	
-	private $http_auth = null;
-	private $http_user = null;
-	private $http_pass = null;
+	protected $http_auth = null;
+	protected $http_user = null;
+	protected $http_pass = null;
 
-    private $response_string;
+    protected $response_string;
 
     function __construct($config = array())
     {
@@ -127,7 +127,7 @@ class REST
 		$this->_ci->curl->http_header('Accept-Language', $lang);
 	}
 
-    private function _call($method, $uri, $params = array(), $format = NULL)
+    protected function _call($method, $uri, $params = array(), $format = NULL)
     {
     	if ($format !== NULL)
 		{
@@ -234,12 +234,12 @@ class REST
 		$this->_ci->curl->option($code, $value);
 	}
 
-	private function _set_headers()
+	protected function _set_headers()
 	{
 		$this->_ci->curl->http_header('Accept: '.$this->mime_type);
 	}
 
-	private function _format_response($response)
+	protected function _format_response($response)
 	{
 		$this->response_string =& $response;
 
@@ -270,14 +270,14 @@ class REST
 
 
     // Format XML for output
-    private function _xml($string)
+    protected function _xml($string)
     {
     	return $string ? (array) simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA) : array();
     }
 
     // Format HTML for output
     // This function is DODGY! Not perfect CSV support but works with my REST_Controller
-    private function _csv($string)
+    protected function _csv($string)
     {
 		$data = array();
 
@@ -300,19 +300,19 @@ class REST
     }
 
     // Encode as JSON
-    private function _json($string)
+    protected function _json($string)
     {
     	return json_decode(trim($string));
     }
 
     // Encode as Serialized array
-    private function _serialize($string)
+    protected function _serialize($string)
     {
     	return unserialize(trim($string));
     }
 
     // Encode raw PHP
-    private function _php($string)
+    protected function _php($string)
     {
     	$string = trim($string);
     	$populated = array();
