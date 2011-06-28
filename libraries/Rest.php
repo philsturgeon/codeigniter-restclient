@@ -66,7 +66,7 @@ class REST
 
 	function __destruct()
 	{
-		$this->_ci->curl->set_default();
+		$this->_ci->curl->set_defaults();
 	}
 
     public function initialize($config)
