@@ -42,6 +42,8 @@ class REST
 	private $http_auth = null;
 	private $http_user = null;
 	private $http_pass = null;
+	private $ssl_verify_peer = null;
+	private $ssl_cainfo = null;
 
     private $response_string;
 
@@ -81,6 +83,8 @@ class REST
 		isset($config['http_auth']) && $this->http_auth = $config['http_auth'];
 		isset($config['http_user']) && $this->http_user = $config['http_user'];
 		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
+		isset($config['ssl_verify_peer']) && $this->ssl_verify_peer = $config['ssl_verify_peer'];
+		isset($config['ssl_cainfo']) && $this->ssl_cainfo = $config['ssl_cainfo'];
     }
 
 
@@ -138,6 +142,17 @@ class REST
 
         // Initialize cURL session
         $this->_ci->curl->create($this->rest_server.$uri);
+
+		// If using ssl set the ssl verification value and cainfo
+		if ($this->ssl_verify_peer == 'FALSE')
+		{
+			$this->_ci->curl->ssl(FALSE);
+		}
+		elseif ($this->ssl_verify_peer == 'TRUE')
+		{
+			$this->ssl_cainfo = getcwd() . $this->ssl_cainfo;
+			$this->_ci->curl->ssl(TRUE, 2, $this->ssl_cainfo);
+		}
 
         // If authentication is enabled use it
         if ($this->http_auth != '' && $this->http_user != '')
