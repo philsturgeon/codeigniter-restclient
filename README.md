@@ -25,7 +25,7 @@ CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use R
 								  'http_user' => 'username',
 								  'http_pass' => 'password',
 								  'http_auth' => 'basic',
-								  'ssl_verify_peer' => 'TRUE',
+								  'ssl_verify_peer' => TRUE,
 								  'ssl_cainfo' => '/certs/cert.pem'));
     
 	// Pull in an array of tweets

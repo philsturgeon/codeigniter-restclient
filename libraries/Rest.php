@@ -144,11 +144,11 @@ class REST
         $this->_ci->curl->create($this->rest_server.$uri);
 
 		// If using ssl set the ssl verification value and cainfo
-		if ($this->ssl_verify_peer == 'FALSE')
+		if ($this->ssl_verify_peer == FALSE)
 		{
 			$this->_ci->curl->ssl(FALSE);
 		}
-		elseif ($this->ssl_verify_peer == 'TRUE')
+		elseif ($this->ssl_verify_peer == TRUE)
 		{
 			$this->ssl_cainfo = getcwd() . $this->ssl_cainfo;
 			$this->_ci->curl->ssl(TRUE, 2, $this->ssl_cainfo);
