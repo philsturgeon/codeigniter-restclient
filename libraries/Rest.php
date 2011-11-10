@@ -236,7 +236,13 @@ class REST
 
 	protected function _set_headers()
 	{
+		foreach ($_COOKIE as $key => $value) 
+		{
+			$cookie = 'Cookie: ' .$key .'=' .urlencode($value);
+		}
 		$this->_ci->curl->http_header('Accept: '.$this->mime_type);
+		$this->_ci->curl->http_header('User-Agent: ' .$_SERVER['HTTP_USER_AGENT']);
+		if (isset($cookie)) $this->_ci->curl->http_header($cookie);
 	}
 
 	protected function _format_response($response)
