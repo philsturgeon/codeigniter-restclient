@@ -126,6 +126,11 @@ class REST
 
 		$this->_ci->curl->http_header('Accept-Language', $lang);
 	}
+	
+	public function add_header($header)
+	{
+		$this->_ci->curl->http_header($header);
+	}	
 
     protected function _call($method, $uri, $params = array(), $format = NULL)
     {
