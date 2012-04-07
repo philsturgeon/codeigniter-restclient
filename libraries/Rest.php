@@ -116,6 +116,11 @@ class REST
 	{
 		$this->_ci->curl->http_header($name, $key);
 	}
+	
+    public function set_user_agent($user_agent)
+	{
+		$this->_ci->curl->http_header('HTTP_USER_AGENT', $user_agent);
+	}
 
     public function language($lang)
 	{
