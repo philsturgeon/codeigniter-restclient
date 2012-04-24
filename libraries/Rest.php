@@ -54,7 +54,6 @@ class REST
 		| If you are going to be a stick in the mud then do it the old fashioned way
 		
 		$this->_ci->load->library('curl');
-		
 		*/
 		
 		// Load the cURL spark which this is dependant on
@@ -134,7 +133,7 @@ class REST
 			$this->format($format);
 		}
 
-		$this->_set_headers();
+		$this->http_header('Accept', $this->mime_type);
 
         // Initialize cURL session
         $this->_ci->curl->create($this->rest_server.$uri);
@@ -234,9 +233,13 @@ class REST
 		$this->_ci->curl->option($code, $value);
 	}
 
-	protected function _set_headers()
+	public function http_header($header, $content = NULL)
 	{
-		$this->_ci->curl->http_header('Accept: '.$this->mime_type);
+		// Did they use a single argument or two?
+		$params = $content ? array($header, $content) : array($header);
+		
+		// Pass these attributes on to the curl library
+		call_user_func_array(array($this->_ci->curl, 'http_header'), $params);
 	}
 
 	protected function _format_response($response)
