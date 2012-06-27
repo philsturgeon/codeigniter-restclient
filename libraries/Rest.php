@@ -2,7 +2,7 @@
 /**
  * CodeIgniter REST Class
  *
- * Mske REST requests to RESTful services with simple syntax.
+ * Make REST requests to RESTful services with simple syntax.
  *
  * @package        	CodeIgniter
  * @subpackage    	Libraries
@@ -255,10 +255,10 @@ class REST
 		// Find out what format the data was returned in
 		$returned_mime = @$this->_ci->curl->info['content_type'];
 
-		// If they sent through more than just mime, stip it off
+		// If they sent through more than just mime, strip it off
 		if (strpos($returned_mime, ';'))
 		{
-			list($returned_mime)=explode(';', $returned_mime);
+			list($returned_mime) = explode(';', $returned_mime);
 		}
 
 		$returned_mime = trim($returned_mime);
@@ -292,7 +292,7 @@ class REST
 			// The substr removes " from start and end
 			$data_fields = explode('","', trim(substr($row, 1, -1)));
 
-			if (count($data_fields) == count($headings))
+			if (count($data_fields) === count($headings))
 			{
 				$data[] = array_combine($headings, $data_fields);
 			}
