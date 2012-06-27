@@ -57,7 +57,7 @@ class REST
 		*/
 		
 		// Load the cURL spark which this is dependant on
-		$this->_ci->load->spark('curl/1.2.0');
+		$this->_ci->load->spark('curl/1.2.1');
 
 		// If a URL was passed to the library
 		empty($config) OR $this->initialize($config);
