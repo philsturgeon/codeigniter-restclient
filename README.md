@@ -16,10 +16,10 @@ CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use R
 
 	// Load the library
 	$this->load->library('rest');
-	
+
 	// Run some setup
 	$this->rest->initialize(array('server' => 'http://twitter.com/'));
-    
+
 	// Pull in an array of tweets
 	$tweets = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
 

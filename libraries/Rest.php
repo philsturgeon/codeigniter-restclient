@@ -38,7 +38,7 @@ class REST
 	protected $rest_server;
 	protected $format;
 	protected $mime_type;
-	
+
 	protected $http_auth = null;
 	protected $http_user = null;
 	protected $http_pass = null;
@@ -52,10 +52,10 @@ class REST
 
 		/* Not using Sparks? You bloody well should be.
 		| If you are going to be a stick in the mud then do it the old fashioned way
-		
+
 		$this->_ci->load->library('curl');
 		*/
-		
+
 		// Load the cURL spark which this is dependant on
 		$this->_ci->load->spark('curl/1.2.1');
 
@@ -237,7 +237,7 @@ class REST
 	{
 		// Did they use a single argument or two?
 		$params = $content ? array($header, $content) : array($header);
-		
+
 		// Pass these attributes on to the curl library
 		call_user_func_array(array($this->_ci->curl, 'http_header'), $params);
 	}
