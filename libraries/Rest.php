@@ -105,6 +105,10 @@ class REST
         return $this->_call('put', $uri, $params, $format);
     }
 
+    public function patch($uri, $params = array(), $format = NULL)
+    {
+        return $this->_call('patch', $uri, $params, $format);
+    }
 
     public function delete($uri, $params = array(), $format = NULL)
     {
