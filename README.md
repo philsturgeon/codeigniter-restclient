@@ -12,7 +12,7 @@ CodeIgniter-REST Client is a CodeIgniter library which makes it easy to do use R
 ## Usage
 
 	// Load the rest client spark
-	$this->load->spark('restclient/2.1.0');
+	$this->load->spark('restclient/2.2.0');
 
 	// Load the library
 	$this->load->library('rest');
