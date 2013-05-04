@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * CodeIgniter REST Class
+ * CodeIgniter REST_Client Class
  *
  * Make REST requests to RESTful services with simple syntax.
  *
@@ -13,7 +13,7 @@
  * @link			http://getsparks.org/packages/restclient/show
  */
 
-class REST
+class REST_Client
 {
     protected $_ci;
 

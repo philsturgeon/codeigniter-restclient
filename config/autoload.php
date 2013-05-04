@@ -1,4 +1,4 @@
 <?php
 
 # Load the rest library when the spark is loaded
-$autoload['libraries'] = array('rest');
+$autoload['libraries'] = array('rest_client');
