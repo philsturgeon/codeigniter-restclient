@@ -1,0 +1,15 @@
+{
+    "name": "rogeriopradoj/codeigniter-restclient",
+    "type": "codeigniter-spark",
+    "description": "codeigniter-restclient philsturgeon's library via composer",
+    "authors": [
+        {
+            "name": "Rogerio Prado de Jesus",
+            "email": "rogeriopradoj@gmail.com"
+        }
+    ],
+    "require": {
+        "compwright/codeigniter-installers": "*",
+        "rogeriopradoj/codeigniter-curl": "*"
+    }
+}
