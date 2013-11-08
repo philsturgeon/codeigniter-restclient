@@ -42,6 +42,9 @@ class REST
 	protected $http_auth = null;
 	protected $http_user = null;
 	protected $http_pass = null;
+	
+	protected $api_name	 = 'X-API-KEY';
+	protected $api_key	 = null;
 
     protected $response_string;
 
@@ -76,7 +79,10 @@ class REST
 		{
 			$this->rest_server .= '/';
 		}
-
+		
+		isset($config['api_name']) && $this->api_name = $config['api_name'];
+		isset($config['api_key']) && $this->api_key = $config['api_key'];
+		
 		isset($config['http_auth']) && $this->http_auth = $config['http_auth'];
 		isset($config['http_user']) && $this->http_user = $config['http_user'];
 		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
@@ -111,9 +117,15 @@ class REST
         return $this->_call('delete', $uri, $params, $format);
     }
 
-    public function api_key($key, $name = 'X-API-KEY')
+    public function api_key($key, $name = FALSE)
 	{
-		$this->_ci->curl->http_header($name, $key);
+		$this->api_key 	= $key;
+		
+		if ($name !== FALSE)
+		{
+			$this->api_name = $name;
+		}
+		
 	}
 
     public function language($lang)
@@ -143,6 +155,13 @@ class REST
         {
         	$this->_ci->curl->http_login($this->http_user, $this->http_pass, $this->http_auth);
         }
+		
+		// If we have an API Key, then use it
+		if ($this->api_key != '')
+		{
+			$this->_ci->curl->http_header($this->api_name, $this->api_key);
+		}
+		
 
         // We still want the response even if there is an error code over 400
         $this->_ci->curl->option('failonerror', FALSE);
