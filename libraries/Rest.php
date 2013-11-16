@@ -196,7 +196,14 @@ class REST
 
 		$this->_ci->curl->http_header('Accept-Language', $lang);
 	}
-	
+
+	/**
+	 * header
+	 *
+	 * @access	public
+	 * @author	David Genelid
+	 * @version 1.0
+	 */	
 	public function header($header)
 	{
 		$this->_ci->curl->http_header($header);
