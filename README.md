@@ -47,9 +47,9 @@ Please take a look at the code to see about things like api_key() and other post
 
 CodeIgniter Rest Client was origionally written by the awesome Phil Sturgeon, The following people have contributed to this project:
 
-Chris Kacerguis (https://github.com/kitsched)
-vlakoff (https://github.com/vlakoff)
-Steven Bullen (https://github.com/StevenBullen)
-rhbecker (https://github.com/rhbecker)
-János Rusiczki (https://github.com/kitsched)
+- Chris Kacerguis (https://github.com/kitsched)
+- vlakoff (https://github.com/vlakoff)
+- Steven Bullen (https://github.com/StevenBullen)
+- rhbecker (https://github.com/rhbecker)
+- János Rusiczki (https://github.com/kitsched)
 
