@@ -8,6 +8,7 @@
  * @subpackage    	Libraries
  * @category    	Libraries
  * @author        	Philip Sturgeon
+ * @author 			Chris Kacerguis
  * @created			04/06/2009
  * @license         http://philsturgeon.co.uk/code/dbad-license
  * @link			http://getsparks.org/packages/restclient/show
@@ -71,6 +72,14 @@ class REST
 		$this->_ci->curl->set_defaults();
 	}
 
+	/**
+	 * initialize
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @author 	Chris Kacerguis
+	 * @version 1.0
+	 */
     public function initialize($config)
     {
 		$this->rest_server = @$config['server'];
@@ -88,7 +97,13 @@ class REST
 		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
     }
 
-
+	/**
+	 * get
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function get($uri, $params = array(), $format = NULL)
     {
         if ($params)
@@ -99,24 +114,61 @@ class REST
     	return $this->_call('get', $uri, NULL, $format);
     }
 
-
+	/**
+	 * post
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function post($uri, $params = array(), $format = NULL)
     {
         return $this->_call('post', $uri, $params, $format);
     }
 
-
+	/**
+	 * put
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function put($uri, $params = array(), $format = NULL)
     {
         return $this->_call('put', $uri, $params, $format);
     }
 
+	/**
+	 * patch
+	 *
+	 * @access	public
+	 * @author	Dmitry Serzhenko
+	 * @version 1.0
+	 */
+	public function patch($uri, $params = array(), $format = NULL)
+	{
+		return $this->_call('patch', $uri, $params, $format);
+	}
 
+	/**
+	 * delete
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function delete($uri, $params = array(), $format = NULL)
     {
         return $this->_call('delete', $uri, $params, $format);
     }
 
+	/**
+	 * api_key
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function api_key($key, $name = FALSE)
 	{
 		$this->api_key 	= $key;
@@ -128,6 +180,13 @@ class REST
 		
 	}
 
+	/**
+	 * language
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function language($lang)
 	{
 		if (is_array($lang))
@@ -143,6 +202,13 @@ class REST
 		$this->_ci->curl->http_header($header);
 	}	
 
+	/**
+	 * _call
+	 *
+	 * @access	protected
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _call($method, $uri, $params = array(), $format = NULL)
     {
     	if ($format !== NULL)
@@ -181,8 +247,15 @@ class REST
         return $this->_format_response($response);
     }
 
-
-    // If a type is passed in that is not supported, use it as a mime type
+	/**
+	 * initialize
+	 *
+	 * If a type is passed in that is not supported, use it as a mime type
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     public function format($format)
 	{
 		if (array_key_exists($format, $this->supported_formats))
@@ -199,6 +272,13 @@ class REST
 		return $this;
 	}
 
+	/**
+	 * debug
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
 	public function debug()
 	{
 		$request = $this->_ci->curl->debug_request();
@@ -239,24 +319,55 @@ class REST
 	}
 
 
+	/**
+	 * status
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
 	// Return HTTP status code
 	public function status()
 	{
 		return $this->info('http_code');
 	}
 
-	// Return curl info by specified key, or whole array
+	/**
+	 * info
+	 *
+	 * Return curl info by specified key, or whole array
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
 	public function info($key = null)
 	{
 		return $key === null ? $this->_ci->curl->info : @$this->_ci->curl->info[$key];
 	}
 
-	// Set custom options
+	/**
+	 * option
+	 *
+	 * Set custom CURL options
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
+	// 
 	public function option($code, $value)
 	{
 		$this->_ci->curl->option($code, $value);
 	}
 
+	/**
+	 * http_header
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
 	public function http_header($header, $content = NULL)
 	{
 		// Did they use a single argument or two?
@@ -266,6 +377,13 @@ class REST
 		call_user_func_array(array($this->_ci->curl, 'http_header'), $params);
 	}
 
+	/**
+	 * _format_response
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
 	protected function _format_response($response)
 	{
 		$this->response_string =& $response;
@@ -295,15 +413,30 @@ class REST
 		return $response;
 	}
 
-
-    // Format XML for output
+	/**
+	 * _xml
+	 *
+	 * Format XML for output
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _xml($string)
     {
     	return $string ? (array) simplexml_load_string($string, 'SimpleXMLElement', LIBXML_NOCDATA) : array();
     }
 
-    // Format HTML for output
-    // This function is DODGY! Not perfect CSV support but works with my REST_Controller
+	/**
+	 * _csv
+	 *
+	 * Format HTML for output.  This function is DODGY! Not perfect CSV support but works 
+	 * with my REST_Controller (https://github.com/philsturgeon/codeigniter-restserver)
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _csv($string)
     {
 		$data = array();
@@ -326,19 +459,43 @@ class REST
 		return $data;
     }
 
-    // Encode as JSON
+	/**
+	 * _json
+	 *
+	 * Encode as JSON
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _json($string)
     {
     	return json_decode(trim($string));
     }
 
-    // Encode as Serialized array
+	/**
+	 * _serialize
+	 *
+	 * Encode as Serialized array
+	 * 
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _serialize($string)
     {
     	return unserialize(trim($string));
     }
 
-    // Encode raw PHP
+	/**
+	 * _php
+	 *
+	 * Encode raw PHP
+	 *
+	 * @access	public
+	 * @author	Phil Sturgeon
+	 * @version 1.0
+	 */
     protected function _php($string)
     {
     	$string = trim($string);
