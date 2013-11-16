@@ -46,3 +46,5 @@ CodeIgniter Rest Client was origionally written by the awesome Phil Sturgeon, Th
 - János Rusiczki (https://github.com/kitsched)
 - David Genelid (https://github.com/junkie)
 - Dmitry Serzhenko (https://github.com/serzhenko)
+- Paul Yasi (https://github.com/paulyasi) -> SSL Peer Verification
+
