@@ -239,6 +239,9 @@ class REST
 		{
 			$this->_ci->curl->http_header($this->api_name, $this->api_key);
 		}
+
+		// Set the Content-Type (contributed by eriklharper)
+		$this->http_header('Content-type', $this->mime_type);
 		
 
         // We still want the response even if there is an error code over 400
