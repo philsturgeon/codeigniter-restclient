@@ -47,6 +47,9 @@ class REST
 	protected $api_name	 = 'X-API-KEY';
 	protected $api_key	 = null;
 
+	protected $ssl_verify_peer 	= null;
+    protected $ssl_cainfo 		= null;
+
     protected $response_string;
 
     function __construct($config = array())
@@ -95,6 +98,10 @@ class REST
 		isset($config['http_auth']) && $this->http_auth = $config['http_auth'];
 		isset($config['http_user']) && $this->http_user = $config['http_user'];
 		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
+
+		isset($config['ssl_verify_peer']) && $this->ssl_verify_peer = $config['ssl_verify_peer'];
+		isset($config['ssl_cainfo']) && $this->ssl_cainfo = $config['ssl_cainfo'];
+
     }
 
 	/**
@@ -228,6 +235,19 @@ class REST
         // Initialize cURL session
         $this->_ci->curl->create($this->rest_server.$uri);
 
+
+		// If using ssl set the ssl verification value and cainfo
+		// contributed by: https://github.com/paulyasi
+		if ($this->ssl_verify_peer === FALSE)
+		{
+			$this->_ci->curl->ssl(FALSE);
+		}
+		elseif ($this->ssl_verify_peer === TRUE)
+		{
+			$this->ssl_cainfo = getcwd() . $this->ssl_cainfo;
+			$this->_ci->curl->ssl(TRUE, 2, $this->ssl_cainfo);
+		}
+
         // If authentication is enabled use it
         if ($this->http_auth != '' && $this->http_user != '')
         {
@@ -240,7 +260,7 @@ class REST
 			$this->_ci->curl->http_header($this->api_name, $this->api_key);
 		}
 
-		// Set the Content-Type (contributed by eriklharper)
+		// Set the Content-Type (contributed by https://github.com/eriklharper)
 		$this->http_header('Content-type', $this->mime_type);
 		
 
