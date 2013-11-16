@@ -14,23 +14,24 @@ Please take a look at the code to see about things like api_key() and other post
 ## Usage
 
 	// Load the rest client spark
-	$this->load->spark('restclient/2.1.0');
+	$this->load->spark('restclient/2.2.1');
 
 	// Load the library
 	$this->load->library('rest');
 
-	// Set config options
+	// Set config options (only 'server' is required to work)
+
 	$config = array('server' 			=> 'https://example.com/',
 					//'api_key'			=> 'Setec_Astronomy'
 					//'api_name'		=> 'X-API-KEY'
-					'http_user' 		=> 'username',
-					'http_pass' 		=> 'password',
-					'http_auth' 		=> 'basic',
-					'ssl_verify_peer' 	=> TRUE,
-					'ssl_cainfo' 		=> '/certs/cert.pem'));
+					//'http_user' 		=> 'username',
+					//'http_pass' 		=> 'password',
+					//'http_auth' 		=> 'basic',
+					//'ssl_verify_peer' => TRUE,
+					//'ssl_cainfo' 		=> '/certs/cert.pem'));
 
 	// Run some setup
-	$this->rest->initialize(array('server' => 'http://twitter.com/'));
+	$this->rest->initialize($config);
 
 	// Pull in an array of tweets
 	$tweets = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
@@ -45,6 +46,6 @@ CodeIgniter Rest Client was origionally written by the awesome Phil Sturgeon, Th
 - rhbecker (https://github.com/rhbecker)
 - János Rusiczki (https://github.com/kitsched)
 - David Genelid (https://github.com/junkie)
-- Dmitry Serzhenko (https://github.com/serzhenko)
+- Dmitry Serzhenko (https://github.com/serzhenko) -> Added PATCH support
 - Paul Yasi (https://github.com/paulyasi) -> SSL Peer Verification
 
