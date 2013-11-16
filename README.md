@@ -42,7 +42,7 @@ Please take a look at the code to see about things like api_key() and other post
 
 	// Pull in an array of tweets
 	$tweets = $this->rest->get('statuses/user_timeline/'.$username.'.xml');
-
+	
 ## Acknowledgements
 
 CodeIgniter Rest Client was origionally written by the awesome Phil Sturgeon, The following people have contributed to this project:
