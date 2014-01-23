@@ -28,7 +28,8 @@ Please take a look at the code to see about things like api_key() and other post
 					//'http_pass' 		=> 'password',
 					//'http_auth' 		=> 'basic',
 					//'ssl_verify_peer' => TRUE,
-					//'ssl_cainfo' 		=> '/certs/cert.pem'));
+					//'ssl_cainfo' 		=> '/certs/cert.pem'
+					);
 
 	// Run some setup
 	$this->rest->initialize($config);
