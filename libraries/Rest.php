@@ -92,6 +92,8 @@ class REST
 			$this->rest_server .= '/';
 		}
 		
+		isset($config['send_cookies']) && $this->send_cookies = $config['send_cookies'];
+		
 		isset($config['api_name']) && $this->api_name = $config['api_name'];
 		isset($config['api_key']) && $this->api_key = $config['api_key'];
 		
@@ -260,6 +262,14 @@ class REST
 			$this->_ci->curl->http_header($this->api_name, $this->api_key);
 		}
 
+		// Send cookies with curl
+		if ($this->send_cookies != '')
+		{
+				
+			$this->_ci->curl->set_cookies( $_COOKIE );		
+		
+		}
+		
 		// Set the Content-Type (contributed by https://github.com/eriklharper)
 		$this->http_header('Content-type', $this->mime_type);
 		
