@@ -100,7 +100,7 @@ class REST
 		isset($config['http_pass']) && $this->http_pass = $config['http_pass'];
 
 		isset($config['ssl_verify_peer']) && $this->ssl_verify_peer = $config['ssl_verify_peer'];
-		isset($config['ssl_cainfo']) && $this->ssl_cainfo = $config['ssl_cainfo'];
+		isset($config['ssl_cainfo']) && $this->ssl_cainfo = getcwd() . $config['ssl_cainfo'];
 
     }
 
@@ -244,7 +244,6 @@ class REST
 		}
 		elseif ($this->ssl_verify_peer === TRUE)
 		{
-			$this->ssl_cainfo = getcwd() . $this->ssl_cainfo;
 			$this->_ci->curl->ssl(TRUE, 2, $this->ssl_cainfo);
 		}
 
