@@ -50,6 +50,7 @@ class REST
     protected $ssl_verify_peer  = null;
     protected $ssl_cainfo       = null;
 
+    protected $send_cookies = null;
     protected $response_string;
 
     function __construct($config = array())
