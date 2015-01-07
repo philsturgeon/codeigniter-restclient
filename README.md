@@ -39,7 +39,7 @@ Please take a look at the code to see about things like api_key() and other post
 
 ## Acknowledgements
 
-CodeIgniter Rest Client was origionally written by the awesome Phil Sturgeon, The following people have contributed to this project:
+CodeIgniter Rest Client was origionally written by Phil Sturgeon, The following people have contributed to this project:
 
 - Chris Kacerguis (https://github.com/kitsched)
 - vlakoff (https://github.com/vlakoff)
